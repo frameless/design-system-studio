@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk_N_E=self.webpackChunk_N_E||[]).push([[62265],{62265:function(e,r,t){t.r(r),t.d(r,{utrecht_table_body:function(){return u}});var l=t(91238);let u=class{constructor(e){(0,l.r)(this,e)}render(){return(0,l.h)(l.H,{role:"rowgroup"},(0,l.h)("slot",null))}};u.style=":host{--_utrecht-table-header-cell-z-index:2;display:table-row-group}"}}]);
