@@ -196,6 +196,7 @@ jobs:
         with:
           branch: gh-pages
           folder: packages/next-templates/dist/
+          token: ${{ secrets.GH_TOKEN }}
 
   publish-npm:
     runs-on: ubuntu-latest
