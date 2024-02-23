@@ -187,6 +187,10 @@ jobs:
           name: next-templates
           path: packages/next-templates/dist/
 
+      - name: Avoid Jekyll in GitHub Pages
+        run: |
+          touch packages/next-templates/dist/.nojekyll
+
       - name: Continuous Deployment to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.4.0
         with:
