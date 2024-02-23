@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-module.exports = {
+const nextConfig = {
+  distDir: 'dist',
+  output: 'export',
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'));
@@ -28,3 +28,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = nextConfig;
