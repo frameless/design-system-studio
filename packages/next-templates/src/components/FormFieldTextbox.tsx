@@ -30,6 +30,7 @@ export interface FormFieldTextboxProps extends FormFieldProps {
   value?: string | number;
   defaultValue?: string;
   list?: string;
+  size?: number;
 }
 
 export const FormFieldTextbox = forwardRef(
@@ -58,6 +59,7 @@ export const FormFieldTextbox = forwardRef(
       onFocus,
       onBlur,
       defaultValue,
+      size,
       ...props
     }: FormFieldTextboxProps,
     ref: ForwardedRef<HTMLInputElement>,
@@ -108,6 +110,7 @@ export const FormFieldTextbox = forwardRef(
           onChange={onChange}
           defaultValue={defaultValue}
           list={list}
+          size={size}
           step={step}
         />
         {status && (
