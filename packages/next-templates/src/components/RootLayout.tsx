@@ -479,7 +479,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
               max={2}
               step={0.01}
               type="range"
-              onInput={(evt: FormEvent<HTMLSelectElement>) => {
+              onInput={(evt) => {
                 const ratioValue = parseFloat((evt.target as HTMLSelectElement)?.value);
 
                 if (isFinite(ratioValue)) {
