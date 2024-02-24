@@ -11,16 +11,29 @@ import {
   IconLineHeight,
   IconPalette,
   IconPointer,
+  IconTableOptions,
   IconTextSize,
 } from '@tabler/icons-react';
+import designTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
 import './design.scss';
 
 export default function Home() {
+  const visibleRows = [...designTokens];
   return (
     <Page className="voorbeeld-page--flex">
       <PageContent>
         <Heading1>Design playground</Heading1>
         <TopTaskNavigation className="grid">
+          <TopTaskLink
+            icon={
+              <Icon>
+                <IconTableOptions />
+              </Icon>
+            }
+            href="/design/all-tokens"
+          >
+            All tokens
+          </TopTaskLink>
           <TopTaskLink
             icon={
               <Icon>
