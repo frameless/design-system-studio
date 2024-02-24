@@ -77,9 +77,9 @@ export default function Home() {
                 <IconFocusCentered />
               </Icon>
             }
-            href="/design/hover"
+            href="/design/focus-indicator"
           >
-            Focus effect
+            Focus indicator
           </TopTaskLink>
           <TopTaskLink
             icon={
