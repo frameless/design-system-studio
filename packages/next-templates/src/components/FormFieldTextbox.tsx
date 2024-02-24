@@ -29,10 +29,6 @@ export interface FormFieldTextboxProps extends FormFieldProps {
   required?: boolean;
   value?: string | number;
   defaultValue?: string;
-  onInput?: any;
-  onChange?: any;
-  onFocus?: any;
-  onBlur?: any;
   list?: string;
 }
 
