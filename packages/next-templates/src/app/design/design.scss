@@ -21,3 +21,7 @@ label .frameless-example-target-size:hover {
   border-color: var(--utrecht-radio-button-checked-border-color, var(--utrecht-radio-button-border-color));
   background-color: var(--utrecht-radio-button-checked-background-color), var(--utrecht-radio-button-background-color);
 }
+
+.utrecht-textbox[size] {
+  inline-size: initial;
+}
