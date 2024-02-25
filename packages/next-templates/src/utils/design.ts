@@ -29,6 +29,17 @@ export interface DesignToken {
 export interface DesignTokenInfo extends DesignToken {
   isColor?: boolean;
   isFontFamily?: boolean;
+  isLineHeight?: boolean;
+  isFontSize?: boolean;
+  isFontWeight?: boolean;
+  isLetterSpacing?: boolean;
+  isPadding?: boolean;
+  isMargin?: boolean;
+  isBorderWidth?: boolean;
+  isBorderStyle?: boolean;
+  isBorderRadius?: boolean;
+  isSpace?: boolean;
+  isSize?: boolean;
 }
 
 export type DesignTokenValue = string | number | BoxShadowValue | undefined;
@@ -285,7 +296,110 @@ export const getSearchParamTokens = (
 export const addTokenInfo = (token: DesignToken): DesignTokenInfo => {
   return {
     ...token,
-    isColor: ['color', 'border-color', 'background-color'].includes(token.path[token.path.length - 1]),
+    isColor: [
+      'color',
+      'accent-color',
+      'border-color',
+      'text-decoration-color',
+      'background-color',
+      'border-block-color',
+      'border-block-end-color',
+      'border-block-start-color',
+      'border-bottom-color',
+      'border-color',
+      'border-inline-color',
+      'border-inline-end-color',
+      'border-inline-start-color',
+      'border-left-color',
+      'border-right-color',
+      'border-top-color',
+      'outline-color',
+    ].includes(token.path[token.path.length - 1]),
     isFontFamily: token && token.path[token.path.length - 1] == 'font-family',
+    isLineHeight: token && token.path[token.path.length - 1] == 'line-height',
+    isFontWeight: token && token.path[token.path.length - 1] == 'font-weight',
+    isFontSize: token && token.path[token.path.length - 1] == 'font-size',
+    isLetterSpacing: token && token.path[token.path.length - 1] == 'letter-spacing',
+    isBorderRadius: [
+      'border-bottom-left-radius',
+      'border-bottom-right-radius',
+      'border-end-end-radius',
+      'border-end-start-radius',
+      'border-radius',
+      'border-start-end-radius',
+      'border-start-start-radius',
+      'border-top-left-radius',
+      'border-top-right-radius',
+    ].includes(token.path[token.path.length - 1]),
+    isBorderStyle: [
+      'outline-style',
+      'border-block-end-style',
+      'border-block-start-style',
+      'border-block-style',
+      'border-bottom-style',
+      'border-inline-end-style',
+      'border-inline-start-style',
+      'border-inline-style',
+      'border-left-style',
+      'border-right-style',
+      'border-style',
+      'border-top-style',
+    ].includes(token.path[token.path.length - 1]),
+    isBorderWidth: [
+      'border-block-end-width',
+      'border-block-start-width',
+      'border-block-width',
+      'border-bottom-width',
+      'border-image-width',
+      'border-inline-end-width',
+      'border-inline-start-width',
+      'border-inline-width',
+      'border-left-width',
+      'border-right-width',
+      'border-top-width',
+      'border-width',
+    ].includes(token.path[token.path.length - 1]),
+    isPadding: [
+      'padding',
+      'padding-left',
+      'padding-right',
+      'padding-top',
+      'padding-bottom',
+      'padding-inline',
+      'padding-block',
+      'padding-inline-start',
+      'padding-inline-end',
+      'padding-block-start',
+      'padding-block-end',
+    ].includes(token.path[token.path.length - 1]),
+    isMargin: [
+      'margin',
+      'margin-left',
+      'margin-right',
+      'margin-top',
+      'margin-bottom',
+      'margin-inline',
+      'margin-block',
+      'margin-inline-start',
+      'margin-inline-end',
+      'margin-block-start',
+      'margin-block-end',
+    ].includes(token.path[token.path.length - 1]),
+    isSpace: ['gap', 'column-gap', 'row-gap'].includes(token.path[token.path.length - 1]),
+    isSize: [
+      'width',
+      'height',
+      'inline-size',
+      'block-size',
+      'min-block-size',
+      'min-inline-size',
+      'min-height',
+      'min-width',
+      'max-block-size',
+      'max-inline-size',
+      'max-height',
+      'max-width',
+      'size', // `size` not an official CSS property
+    ].includes(token.path[token.path.length - 1]),
   };
 };

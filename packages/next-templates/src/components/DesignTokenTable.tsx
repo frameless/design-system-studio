@@ -13,7 +13,23 @@ import {
 } from '@utrecht/component-library-react';
 import { DesignTokenInfo } from '@/utils/design';
 import { FormFieldTextbox } from '@/components/FormFieldTextbox';
-import { IconFileTypography, IconPalette, IconPin, IconPinFilled } from '@tabler/icons-react';
+import {
+  IconBold,
+  IconBorderOuter,
+  IconBorderRadius,
+  IconBorderStyle2,
+  IconBoxMargin,
+  IconBoxPadding,
+  IconDimensions,
+  IconFileTypography,
+  IconLetterSpacing,
+  IconLineHeight,
+  IconPalette,
+  IconPin,
+  IconPinFilled,
+  IconSpace,
+  IconTextSize,
+} from '@tabler/icons-react';
 import { useStudioContext } from '@/utils/StudioContext';
 import { useCustomTokenContext } from '@/utils/CustomTokenContext';
 
@@ -39,49 +55,124 @@ export const DesignTokenTable = <T extends DesignTokenInfo & { pinned?: boolean;
         </TableRow>
       </TableHeader>
       <TableBody>
-        {tokens.map(({ name, value, path, pinned, isColor, isFontFamily }) => {
-          const tokenRef = path.join('.');
-          return (
-            <TableRow key={name}>
-              <TableCell>
-                {isColor && (
-                  <Icon>
-                    <IconPalette />
-                  </Icon>
-                )}
-                {isFontFamily && (
-                  <Icon>
-                    <IconFileTypography />
-                  </Icon>
-                )}
-              </TableCell>
-              <TableCell>
-                <Code>{tokenRef}</Code>
-              </TableCell>
-              <TableCell>
-                {editable ? (
-                  <FormFieldTextbox label={name} {...useTokenInput({ token: tokenRef })}></FormFieldTextbox>
-                ) : (
-                  <Code>{String(value)}</Code>
-                )}
-              </TableCell>
-              <TableCell>
-                <ButtonGroup>
-                  <Button
-                    appearance="subtle-button"
-                    pressed={pinned}
-                    onClick={() => {
-                      togglePinned(tokenRef);
-                    }}
-                  >
-                    <Icon>{pinned ? <IconPinFilled /> : <IconPin />}</Icon>
-                    Pin
-                  </Button>
-                </ButtonGroup>
-              </TableCell>
-            </TableRow>
-          );
-        })}
+        {tokens.map(
+          ({
+            name,
+            value,
+            path,
+            pinned,
+            isColor,
+            isFontFamily,
+            isLineHeight,
+            isFontSize,
+            isLetterSpacing,
+            isFontWeight,
+            isPadding,
+            isMargin,
+            isBorderRadius,
+            isBorderStyle,
+            isBorderWidth,
+            isSpace,
+            isSize,
+          }) => {
+            const tokenRef = path.join('.');
+            return (
+              <TableRow key={name}>
+                <TableCell>
+                  {isColor && (
+                    <Icon>
+                      <IconPalette />
+                    </Icon>
+                  )}
+                  {isFontFamily && (
+                    <Icon>
+                      <IconFileTypography />
+                    </Icon>
+                  )}
+                  {isFontWeight && (
+                    <Icon>
+                      <IconBold />
+                    </Icon>
+                  )}
+                  {isLineHeight && (
+                    <Icon>
+                      <IconLineHeight />
+                    </Icon>
+                  )}
+                  {isFontSize && (
+                    <Icon>
+                      <IconTextSize />
+                    </Icon>
+                  )}
+                  {isLetterSpacing && (
+                    <Icon>
+                      <IconLetterSpacing />
+                    </Icon>
+                  )}
+                  {isMargin && (
+                    <Icon>
+                      <IconBoxMargin />
+                    </Icon>
+                  )}
+                  {isPadding && (
+                    <Icon>
+                      <IconBoxPadding />
+                    </Icon>
+                  )}
+                  {isBorderRadius && (
+                    <Icon>
+                      <IconBorderRadius />
+                    </Icon>
+                  )}
+                  {isBorderWidth && (
+                    <Icon>
+                      <IconBorderOuter />
+                    </Icon>
+                  )}
+                  {isBorderStyle && (
+                    <Icon>
+                      <IconBorderStyle2 />
+                    </Icon>
+                  )}
+                  {isSpace && (
+                    <Icon>
+                      <IconSpace />
+                    </Icon>
+                  )}
+                  {isSize && (
+                    <Icon>
+                      <IconDimensions />
+                    </Icon>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <Code>{tokenRef}</Code>
+                </TableCell>
+                <TableCell>
+                  {editable ? (
+                    <FormFieldTextbox label={name} {...useTokenInput({ token: tokenRef })}></FormFieldTextbox>
+                  ) : (
+                    <Code>{String(value)}</Code>
+                  )}
+                </TableCell>
+                <TableCell>
+                  <ButtonGroup>
+                    <Button
+                      appearance="subtle-button"
+                      pressed={pinned}
+                      onClick={() => {
+                        togglePinned(tokenRef);
+                      }}
+                    >
+                      <Icon>{pinned ? <IconPinFilled /> : <IconPin />}</Icon>
+                      Pin
+                    </Button>
+                  </ButtonGroup>
+                </TableCell>
+              </TableRow>
+            );
+          },
+        )}
       </TableBody>
     </Table>
   );
