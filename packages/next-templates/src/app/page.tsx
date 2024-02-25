@@ -24,6 +24,7 @@ import {
 import { ExampleHeader } from '@/components/ExampleHeader/ExampleHeader';
 import { ExampleFooter } from '@/components/ExampleFooter/ExampleFooter';
 import { ExampleNavigation } from '@/components/ExampleNavigation/ExampleNavigation';
+import { DesignToptasks } from './design/pages';
 
 export default function Home() {
   return (
@@ -33,6 +34,8 @@ export default function Home() {
       <PageContent className="voorbeeld-page-content--flex">
         <section className="voorbeeld-section">
           <div className="voorbeeld-section-content">
+            <DesignToptasks />
+            {/*
             <TopTaskNavigation className="grid">
               <TopTaskLink icon={<UtrechtIconPaspoort />}>Paspoort of ID-kaart aanvragen</TopTaskLink>
               <TopTaskLink href="/meldingen/" icon={<UtrechtIconMeldingKlacht />}>
@@ -43,6 +46,7 @@ export default function Home() {
               <TopTaskLink icon={<UtrechtIconNummerbord />}>Parkeren: kentekenwijziging doorgeven</TopTaskLink>
               <TopTaskLink icon={<UtrechtIconAfvalScheiden />}>Afval</TopTaskLink>
             </TopTaskNavigation>
+            */}
           </div>
         </section>
         <section className="voorbeeld-section voorbeeld-section--spacing">

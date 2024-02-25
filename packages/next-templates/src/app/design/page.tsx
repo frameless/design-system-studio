@@ -1,21 +1,9 @@
 'use client';
 
-import { Heading1, Page, Icon, PageContent } from '@utrecht/component-library-react';
-import { TopTaskNavigation } from '@/components/TopTask/TopTaskNavigation';
-import { TopTaskLink } from '@/components/TopTask/TopTaskLink';
-import {
-  IconColorSwatch,
-  IconCrosshair,
-  IconFocusCentered,
-  IconForms,
-  IconLineHeight,
-  IconPalette,
-  IconPointer,
-  IconTableOptions,
-  IconTextSize,
-} from '@tabler/icons-react';
+import { Heading1, Page, PageContent } from '@utrecht/component-library-react';
 import designTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
 import './design.scss';
+import { DesignToptasks } from './pages';
 
 export default function Home() {
   const visibleRows = [...designTokens];
@@ -23,98 +11,7 @@ export default function Home() {
     <Page className="voorbeeld-page--flex">
       <PageContent>
         <Heading1>Design playground</Heading1>
-        <TopTaskNavigation className="grid">
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconTableOptions />
-              </Icon>
-            }
-            href="/design/all-tokens"
-          >
-            All tokens
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconTextSize />
-              </Icon>
-            }
-            href="/design/font-size-scale"
-          >
-            Font size scale
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconPalette />
-              </Icon>
-            }
-            href="/design/brand-color"
-          >
-            Brand colors
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconColorSwatch />
-              </Icon>
-            }
-            href="/design/common-color"
-          >
-            Colors meanings
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconLineHeight />
-              </Icon>
-            }
-            href="/design/line-height"
-          >
-            Line height
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconForms />
-              </Icon>
-            }
-            href="/design/form"
-          >
-            Form components
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconFocusCentered />
-              </Icon>
-            }
-            href="/design/focus-indicator"
-          >
-            Focus indicator
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconPointer />
-              </Icon>
-            }
-            href="/design/hover"
-          >
-            Pointer hover effect
-          </TopTaskLink>
-          <TopTaskLink
-            icon={
-              <Icon>
-                <IconCrosshair />
-              </Icon>
-            }
-            href="/design/pointer-target-size"
-          >
-            Pointer target size
-          </TopTaskLink>
-        </TopTaskNavigation>
+        <DesignToptasks />
       </PageContent>
     </Page>
   );
