@@ -2,6 +2,7 @@ import { TopTaskNavigation } from '@/components/TopTask/TopTaskNavigation';
 import { TopTaskLink } from '@/components/TopTask/TopTaskLink';
 import {
   IconColorSwatch,
+  IconComponents,
   IconCrosshair,
   IconFocusCentered,
   IconForms,
@@ -18,6 +19,11 @@ export const links = [
     icon: <IconTableOptions />,
     href: '/design/all-tokens',
     label: 'All tokens',
+  },
+  {
+    icon: <IconComponents />,
+    href: '/design/component',
+    label: 'All components',
   },
   {
     icon: <IconTextSize />,
