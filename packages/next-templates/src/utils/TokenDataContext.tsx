@@ -1,10 +1,10 @@
 import { createStrictContext } from './createStrictContext';
-import { DesignToken, DesignTokenMap, createDesignTokenMap } from './design';
+import { DesignToken, DesignTokenInfo, DesignTokenMap, addTokenInfo, createDesignTokenMap } from './design';
 
 export interface TokenDataContext {
-  tokens: DesignToken[];
-  tokenMap: DesignTokenMap;
-  getToken: (tokenName: string) => DesignToken | undefined;
+  tokens: DesignTokenInfo[];
+  tokenMap: DesignTokenMap<DesignTokenInfo>;
+  getToken: (tokenName: string) => DesignTokenInfo | undefined;
   tokenExists: (tokenName: string) => boolean;
 }
 
@@ -13,10 +13,11 @@ export const [TokenDataContextProvider, useTokenDataContext] = createStrictConte
 });
 
 export const initTokenDataContext = ({ tokens }: { tokens: DesignToken[] }): TokenDataContext => {
-  const tokenMap = createDesignTokenMap(tokens);
+  const tokenInfo = tokens.map(addTokenInfo);
+  const tokenMap = createDesignTokenMap(tokenInfo);
   const tokenExists = (name: string) => Object.prototype.hasOwnProperty.call(tokenMap, name);
   return {
-    tokens: [...tokens],
+    tokens: tokenInfo,
     tokenMap,
     getToken: (name: string) => (tokenExists(name) ? tokenMap[name] : undefined),
     tokenExists,

@@ -26,10 +26,15 @@ export interface DesignToken {
   path: string[];
 }
 
+export interface DesignTokenInfo extends DesignToken {
+  isColor?: boolean;
+  isFontFamily?: boolean;
+}
+
 export type DesignTokenValue = string | number | BoxShadowValue | undefined;
 
-export interface DesignTokenMap {
-  [index: string]: DesignToken;
+export interface DesignTokenMap<T = DesignToken> {
+  [index: string]: T;
 }
 
 export interface DesignTokenValueMap {
@@ -276,3 +281,11 @@ export const getSearchParamTokens = (
       }),
       {},
     );
+
+export const addTokenInfo = (token: DesignToken): DesignTokenInfo => {
+  return {
+    ...token,
+    isColor: ['color', 'border-color', 'background-color'].includes(token.path[token.path.length - 1]),
+    isFontFamily: token && token.path[token.path.length - 1] == 'font-family',
+  };
+};

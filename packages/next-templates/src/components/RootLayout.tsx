@@ -26,7 +26,7 @@ import {
 } from '@utrecht/component-library-react/dist/css-module';
 import { ThemeBuilder, ThemeBuilderCanvas, ThemeBuilderSidebar } from './ThemeBuilder';
 import { FormFieldTextbox } from './FormFieldTextbox';
-import { ButtonLink, ColorSample, FormField, Paragraph } from '@utrecht/component-library-react';
+import { ButtonLink, ColorSample, FormField, Icon, Paragraph } from '@utrecht/component-library-react';
 import designTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
@@ -44,6 +44,7 @@ import {
 import { StudioContextProvider, initStudioContext } from '@/utils/StudioContext';
 import { TokenDataContextProvider, initTokenDataContext } from '@/utils/TokenDataContext';
 import { CustomTokenContextProvider, initCustomTokenContext } from '@/utils/CustomTokenContext';
+import { IconShare, IconTrash } from '@tabler/icons-react';
 
 const designTokensMap = createDesignTokenMap([...themeBuilderTokens, ...designTokens]);
 
@@ -99,7 +100,13 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
   const [copyActivatedTimeout, setCopyActivatedTimeout] = useState(false);
 
   const customTokenContext = initCustomTokenContext({ tokenMap, tokens: initialTokens });
-  const { tokenMap: userTokens, formatComputedValue, formatTokenValue, useTokenInput } = customTokenContext;
+  const {
+    tokenMap: userTokens,
+    formatComputedValue,
+    formatTokenValue,
+    useTokenInput,
+    reset: resetCustomTokens,
+  } = customTokenContext;
 
   const params = new URLSearchParams({
     ...Object.fromEntries(Object.entries(userTokens).map(([key, value]) => [key, String(value)])),
@@ -291,7 +298,10 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                   href={shareURL}
                   target="_new"
                   appearance="secondary-action-button"
-                  onClick={() => {
+                  onClick={(evt) => {
+                    if (!evt.metaKey) {
+                      evt.preventDefault();
+                    }
                     navigator.clipboard.writeText(shareURL);
                     setCopyActivated(true);
                     setCopyActivatedTimeout(false);
@@ -301,8 +311,24 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                     }, 3000);
                   }}
                 >
+                  <Icon>
+                    <IconShare />
+                  </Icon>
                   Share link
                 </ButtonLink>
+                <Button
+                  appearance="secondary-action-button"
+                  onClick={() => {
+                    if (confirm('Are you sure')) {
+                      resetCustomTokens();
+                    }
+                  }}
+                >
+                  <Icon>
+                    <IconTrash />
+                  </Icon>
+                  Reset changes
+                </Button>
               </ButtonGroup>
               {copyActivated && !copyActivatedTimeout && (
                 <div role="alert">

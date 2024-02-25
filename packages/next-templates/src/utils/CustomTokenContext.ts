@@ -14,6 +14,7 @@ export interface CustomTokenContext {
   formatTokenValue: (tokenName: string) => string;
   formatComputedValue: (tokenName: string) => string;
   useTokenInput: (arg: UseTokenArgs) => TokenInputProps;
+  reset: () => void;
 }
 
 export const [CustomTokenContextProvider, useCustomTokenContext] = createStrictContext<CustomTokenContext>({
@@ -30,6 +31,8 @@ export const initCustomTokenContext = ({
   const [customTokenMap, setCustomTokenMap] = useState({
     ...tokens,
   });
+
+  const reset = () => setCustomTokenMap({});
 
   const getTokenValue = (name: string) =>
     Object.prototype.hasOwnProperty.call(customTokenMap, name) ? customTokenMap[name] : undefined;
@@ -82,5 +85,6 @@ export const initCustomTokenContext = ({
     useTokenInput,
     formatTokenValue,
     formatComputedValue,
+    reset,
   };
 };
