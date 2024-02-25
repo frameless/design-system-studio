@@ -18,9 +18,10 @@ import {
 import designTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
 import { DesignToken, createDesignTokenMap, themeBuilderTokens, useTokenEditor } from '@/utils/design';
 import { FormFieldTextbox } from '@/components/FormFieldTextbox';
-import { useState } from 'react';
-import '../design.scss';
+import { useContext, useState } from 'react';
 import { IconPin, IconPinFilled } from '@tabler/icons-react';
+import { useStudioContext } from '@/utils/StudioContext';
+import '../design.scss';
 
 const designTokensMap = createDesignTokenMap([...themeBuilderTokens, ...designTokens]);
 
@@ -28,25 +29,40 @@ interface RowState {
   pinned?: boolean;
 }
 
+const createPathRegExp = (query: string) => new RegExp(query.split('').join('.*'), 'gim');
+
 export default function Home() {
+  const { pinned, setPinned } = useStudioContext();
   const [query, setQuery] = useState('');
-  const [pinned, setPinned] = useState<{ [index: string]: boolean }>({});
-  const togglePinned = (name: string) =>
-    setPinned({
-      ...pinned,
-      // Toggle the pinned state of this token
-      [name]: !pinned[name],
-    });
+
+  // const [pinned, setPinned] = useState<{ [index: string]: boolean }>({});
+  const togglePinned = (name: string) => {
+    let newPinned: typeof pinned;
+    const isPinned = Object.prototype.hasOwnProperty.call(pinned, name);
+    if (isPinned) {
+      newPinned = { ...pinned };
+      delete newPinned[name];
+    } else {
+      newPinned = {
+        ...pinned,
+        [name]: !pinned[name],
+      };
+    }
+    setPinned(newPinned);
+  };
 
   const { useToken, cssVariables } = useTokenEditor({ designTokensMap });
   let visibleRows: (DesignToken & RowState)[] = designTokens;
 
-  visibleRows = visibleRows.map((row) => ({
-    ...row,
-    pinned: Object.prototype.hasOwnProperty.call(pinned, row.name) && pinned[row.name] === true,
-  }));
+  visibleRows = visibleRows.map((row) => {
+    const tokenRef = row.path.join('.');
+    return {
+      ...row,
+      pinned: Object.prototype.hasOwnProperty.call(pinned, tokenRef) && pinned[tokenRef] === true,
+    };
+  });
   if (query) {
-    const filterRegExp = new RegExp(query.split('').join('.*'), 'gim');
+    const filterRegExp = createPathRegExp(query);
     visibleRows = visibleRows.filter(({ name, pinned }) => filterRegExp.test(name) || pinned);
   }
 
@@ -69,41 +85,42 @@ export default function Home() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {visibleRows.map(({ name, value, path, pinned }) => (
-                <TableRow key={name}>
-                  <TableCell>
-                    {path.join('.')}{' '}
-                    {pinned && (
-                      <Icon>
-                        <IconPinFilled />
-                      </Icon>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    {editable ? (
-                      <FormFieldTextbox label={name} {...useToken({ token: path.join('.') })}></FormFieldTextbox>
-                    ) : (
-                      <Code>{String(value)}</Code>
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <ButtonGroup>
-                      <Button
-                        appearance="subtle-button"
-                        pressed={pinned}
-                        onClick={() => {
-                          togglePinned(name);
-                        }}
-                      >
+              {visibleRows.map(({ name, value, path, pinned }) => {
+                const tokenRef = path.join('.');
+                return (
+                  <TableRow key={name}>
+                    <TableCell>
+                      {tokenRef}{' '}
+                      {pinned && (
                         <Icon>
-                          <IconPin />
+                          <IconPinFilled />
                         </Icon>
-                        Pin
-                      </Button>
-                    </ButtonGroup>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {editable ? (
+                        <FormFieldTextbox label={name} {...useToken({ token: tokenRef })}></FormFieldTextbox>
+                      ) : (
+                        <Code>{String(value)}</Code>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <ButtonGroup>
+                        <Button
+                          appearance="subtle-button"
+                          pressed={pinned}
+                          onClick={() => {
+                            togglePinned(tokenRef);
+                          }}
+                        >
+                          <Icon>{pinned ? <IconPinFilled /> : <IconPin />}</Icon>
+                          Pin
+                        </Button>
+                      </ButtonGroup>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </div>
