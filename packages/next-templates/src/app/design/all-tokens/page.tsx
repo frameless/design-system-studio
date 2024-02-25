@@ -18,10 +18,11 @@ import {
 import designTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
 import { DesignToken, createDesignTokenMap, themeBuilderTokens, useTokenEditor } from '@/utils/design';
 import { FormFieldTextbox } from '@/components/FormFieldTextbox';
-import { useContext, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { IconPin, IconPinFilled } from '@tabler/icons-react';
 import { useStudioContext } from '@/utils/StudioContext';
 import '../design.scss';
+import { useCustomTokenContext } from '@/utils/CustomTokenContext';
 
 const designTokensMap = createDesignTokenMap([...themeBuilderTokens, ...designTokens]);
 
@@ -51,20 +52,32 @@ export default function Home() {
     setPinned(newPinned);
   };
 
-  const { useToken, cssVariables } = useTokenEditor({ designTokensMap });
+  const { cssVariables } = useTokenEditor({ designTokensMap });
+  const { useTokenInput } = useCustomTokenContext();
   let visibleRows: (DesignToken & RowState)[] = designTokens;
 
-  visibleRows = visibleRows.map((row) => {
-    const tokenRef = row.path.join('.');
-    return {
-      ...row,
-      pinned: Object.prototype.hasOwnProperty.call(pinned, tokenRef) && pinned[tokenRef] === true,
-    };
-  });
-  if (query) {
-    const filterRegExp = createPathRegExp(query);
-    visibleRows = visibleRows.filter(({ name, pinned }) => filterRegExp.test(name) || pinned);
-  }
+  const enrichedRows = useMemo(
+    () =>
+      visibleRows.map((row) => {
+        const tokenRef = row.path.join('.');
+        return {
+          ...row,
+          pinned: Object.prototype.hasOwnProperty.call(pinned, tokenRef) && pinned[tokenRef] === true,
+        };
+      }),
+    [pinned],
+  );
+
+  const filteredRows = useMemo(() => {
+    if (query) {
+      const filterRegExp = createPathRegExp(query);
+      return enrichedRows.filter(({ name, pinned }) => filterRegExp.test(name) || pinned);
+    } else {
+      return enrichedRows;
+    }
+  }, [query, enrichedRows]);
+
+  visibleRows = filteredRows;
 
   const editable = true;
 
@@ -99,7 +112,7 @@ export default function Home() {
                     </TableCell>
                     <TableCell>
                       {editable ? (
-                        <FormFieldTextbox label={name} {...useToken({ token: tokenRef })}></FormFieldTextbox>
+                        <FormFieldTextbox label={name} {...useTokenInput({ token: tokenRef })}></FormFieldTextbox>
                       ) : (
                         <Code>{String(value)}</Code>
                       )}

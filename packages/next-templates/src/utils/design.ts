@@ -26,6 +26,8 @@ export interface DesignToken {
   path: string[];
 }
 
+export type DesignTokenValue = string | number | BoxShadowValue | undefined;
+
 export interface DesignTokenMap {
   [index: string]: DesignToken;
 }
@@ -239,37 +241,7 @@ export const useTokenEditor = ({
       [name]: value,
     });
 
-  const useToken = ({
-    token,
-    transformValue,
-  }: UseTokenArgs): { defaultValue?: string } & Pick<InputHTMLAttributes<HTMLInputElement>, 'onInput' | 'list'> => {
-    const presetValue = Object.prototype.hasOwnProperty.call(tokens, token) ? tokens[token] : undefined;
-    const tokenObj = Object.prototype.hasOwnProperty.call(designTokensMap, token) ? designTokensMap[token] : undefined;
-    return {
-      // Use the preset value (from query params, or from a saved session, for example)
-      // If no preset value exists, then use the value from the base theme.
-      defaultValue: (presetValue ? String(presetValue) : undefined) || (tokenObj ? String(tokenObj.value) : undefined),
-      onInput: (evt) => {
-        const inputElement = evt.target as HTMLInputElement;
-        if (inputElement) {
-          let value = inputElement.value;
-          if (transformValue) {
-            value = transformValue(value);
-          }
-          const cssVariable = toCustomProperty(token);
-
-          setUserToken(token, value);
-          setCssVariables({ ...cssVariables, [cssVariable]: value });
-        }
-      },
-      list:
-        tokenObj && ['color', 'border-color', 'background-color'].includes(tokenObj.path[tokenObj.path.length - 1])
-          ? 'color-tokens'
-          : undefined,
-    };
-  };
-
-  return { useToken, userTokens, setUserToken, tokens, cssVariables, setCssVariables };
+  return { userTokens, setUserToken, tokens, cssVariables, setCssVariables };
 };
 
 export const fontFamilies = [
@@ -286,3 +258,21 @@ export const fontFamilies = [
   'Source Serif Pro',
   'Work Sans',
 ];
+
+export const components = {};
+
+export const getSearchParamTokens = (
+  entries: IterableIterator<[string, string]> | undefined,
+  tokenExists: (name: string) => boolean,
+): DesignTokenValueMap =>
+  Array.from(entries || [])
+    .filter(([searchParamKey]) => {
+      return tokenExists(searchParamKey);
+    })
+    .reduce(
+      (map, [key, value]) => ({
+        ...map,
+        [key]: value,
+      }),
+      {},
+    );
