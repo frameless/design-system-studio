@@ -27,7 +27,7 @@ import {
 import { ThemeBuilder, ThemeBuilderCanvas, ThemeBuilderSidebar } from './ThemeBuilder';
 import { FormFieldTextbox } from './FormFieldTextbox';
 import { ButtonLink, ColorSample, FormField, Icon, Paragraph } from '@utrecht/component-library-react';
-import designTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
+import themeDesignTokens from '@nl-design-system-unstable/voorbeeld-design-tokens/dist/index.json';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
   DesignTokenValueMap,
@@ -40,11 +40,16 @@ import {
   getSearchParamTokens,
   createResetCssVariables,
   fallbackTokens,
+  components,
+  ComponentDesc,
+  getComponentTokens,
+  designTokens,
+  tokenRef,
 } from '../utils/design';
 import { StudioContextProvider, initStudioContext } from '@/utils/StudioContext';
 import { TokenDataContextProvider, initTokenDataContext } from '@/utils/TokenDataContext';
 import { CustomTokenContextProvider, initCustomTokenContext } from '@/utils/CustomTokenContext';
-import { IconShare, IconTrash } from '@tabler/icons-react';
+import { IconReload, IconShare, IconTrash } from '@tabler/icons-react';
 
 const designTokensMap = createDesignTokenMap([...themeBuilderTokens, ...designTokens]);
 
@@ -75,9 +80,9 @@ const CustomTokenStyle = ({
 };
 
 export default function RootLayout({ children }: PropsWithChildren<{}>) {
-  const tokenDataContext = initTokenDataContext({ tokens: [...themeBuilderTokens, ...designTokens] });
+  const tokenDataContext = initTokenDataContext({ tokens: [...themeBuilderTokens, ...themeDesignTokens] });
   const { tokenExists, tokenMap } = tokenDataContext;
-
+  const componentRootRef = useRef<HTMLDivElement>(null);
   const searchParamsTokens = getSearchParamTokens(useSearchParams()?.entries(), tokenExists);
 
   const initialTokens: DesignTokenValueMap = {
@@ -89,7 +94,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
   const context = initStudioContext();
   const { pinned } = context;
 
-  const commonColorTokens = designTokens
+  const commonColorTokens = themeDesignTokens
     .filter(({ name }) => name.startsWith('voorbeeldColor'))
     .map(({ path, value }) => ({
       name: path.join('.'),
@@ -114,6 +119,22 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
   const shareURL = `${typeof location !== 'undefined' ? location.href : ''}?${params}`;
 
   const resetCssVariables = createResetCssVariables(designTokensMap, fallbackTokens);
+  // const components = useMemo(() => {
+
+  const [usedComponents, setUsedComponents] = useState<ComponentDesc[]>([]);
+
+  const scanPage = (root: HTMLElement): ComponentDesc[] => {
+    if (root) {
+      const usedComponents = components.filter(({ cssSelector }) => {
+        return !!root?.querySelector(cssSelector);
+      });
+      return usedComponents;
+    }
+    return [];
+  };
+  const scanPageEffect = () => {
+    setUsedComponents(componentRootRef.current ? scanPage(componentRootRef.current) : []);
+  };
 
   return (
     <StudioContextProvider value={context}>
@@ -122,7 +143,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
           <ThemeBuilder>
             <ThemeBuilderSidebar lang="en" className="frameless-theme frameless-theme--dark">
               <Heading1>Frameless Studio</Heading1>
-              <details open>
+              <details>
                 <summary>Color</summary>
                 <datalist id="color-tokens">
                   {commonColorTokens.map(({ name, value }) => (
@@ -195,7 +216,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                 ></FormFieldTextbox>
                 <ColorSample color={formatComputedValue('utrecht.focus.background-color')}></ColorSample>
               </details>
-              <details open>
+              <details>
                 <summary>Font</summary>
                 <div>
                   <datalist id="font-family-values">
@@ -264,11 +285,11 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                   ></FormFieldTextbox>
                 </div>
               </details>
-              <details open>
+              <details>
                 <summary>Space</summary>
                 <div></div>
               </details>
-              <details open>
+              <details>
                 <summary>Rounded corners</summary>
                 <div>
                   {/* TODO: "Border radius" should change a common token, not a component token */}
@@ -287,12 +308,39 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                   <Code>{formatTokenValue('utrecht.button.border-radius') || ''}</Code>
                 </div>
               </details>
-              <details open>
+              <details>
                 <summary>Pinned design tokens ({Object.keys(pinned).length})</summary>
                 {Object.keys(pinned).map((token) => (
                   <FormFieldTextbox key={token} label={token} {...useTokenInput({ token })}></FormFieldTextbox>
                 ))}
               </details>
+              <Button onClick={() => scanPageEffect()}>
+                <Icon>
+                  <IconReload />
+                </Icon>
+                Scan page
+              </Button>
+              {usedComponents.map(({ id, label }) => {
+                return (
+                  <details key={id}>
+                    <summary>{label}</summary>
+                    {getComponentTokens(id, components, designTokens).map((token) => {
+                      const { name } = token;
+                      const ref = token.path.slice(2).join('.');
+                      return (
+                        <div key={name}>
+                          {' '}
+                          <FormFieldTextbox
+                            label={<Code>{ref}</Code>}
+                            {...useTokenInput({ token: ref })}
+                          ></FormFieldTextbox>
+                          <ColorSample color={formatComputedValue(ref)}></ColorSample>
+                        </div>
+                      );
+                    })}
+                  </details>
+                );
+              })}
               <ButtonGroup>
                 <ButtonLink
                   href={shareURL}
@@ -345,7 +393,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                 <Surface>
                   <Document>
                     <SkipLink href="#main">Naar inhoud</SkipLink>
-                    {children}
+                    <div ref={componentRootRef}>{children}</div>
                   </Document>
                 </Surface>
               </CustomTokenStyle>
