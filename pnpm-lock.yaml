@@ -297,8 +297,8 @@ importers:
         specifier: 2.0.0
         version: 2.0.0
       '@utrecht/design-tokens':
-        specifier: 1.0.0-alpha.607
-        version: 1.0.0-alpha.607
+        specifier: 1.0.0-alpha.633
+        version: 1.0.0-alpha.633
       '@utrecht/web-component-library-react':
         specifier: 1.0.2
         version: 1.0.2(react-dom@18.2.0)(react@18.2.0)
@@ -4080,8 +4080,8 @@ packages:
       clsx: 1.2.1
     dev: true
 
-  /@utrecht/design-tokens@1.0.0-alpha.607:
-    resolution: {integrity: sha512-Vx2CPVnw9ipDB2Z3qLoOEeOCayxrzGRLLL//WMxc4FFjqnHswBMqk+YHd8OAeYBNOJUsNjuURZzdeMl4W86Yfw==}
+  /@utrecht/design-tokens@1.0.0-alpha.633:
+    resolution: {integrity: sha512-uur9BLCndgFwMq/roDmKClpCkJPz8c1ofId4UmvhSeAoDOY9FVPU5+ZWiA134TKIsC8OTHTms2nmGnrvGDU/Tg==}
     dev: true
 
   /@utrecht/web-component-library-react@1.0.2(react-dom@18.2.0)(react@18.2.0):
