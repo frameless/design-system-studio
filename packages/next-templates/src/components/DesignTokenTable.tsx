@@ -27,6 +27,7 @@ import {
   IconPalette,
   IconPin,
   IconPinFilled,
+  IconPointer,
   IconSpace,
   IconTextSize,
 } from '@tabler/icons-react';
@@ -75,6 +76,7 @@ export const DesignTokenTable = <T extends DesignTokenInfo & { pinned?: boolean;
             isBorderWidth,
             isSpace,
             isSize,
+            isCursor,
           }) => {
             const tokenRef = path.join('.');
             return (
@@ -143,6 +145,11 @@ export const DesignTokenTable = <T extends DesignTokenInfo & { pinned?: boolean;
                   {isSize && (
                     <Icon>
                       <IconDimensions />
+                    </Icon>
+                  )}
+                  {isCursor && (
+                    <Icon>
+                      <IconPointer />
                     </Icon>
                   )}
                 </TableCell>

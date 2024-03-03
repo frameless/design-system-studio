@@ -42,6 +42,7 @@ export interface DesignTokenInfo extends DesignToken {
   isBorderRadius?: boolean;
   isSpace?: boolean;
   isSize?: boolean;
+  isCursor?: boolean;
 }
 
 export type DesignTokenValue = string | number | BoxShadowValue | undefined;
@@ -413,6 +414,7 @@ export const addTokenInfo = (token: DesignToken): DesignTokenInfo => {
       'max-width',
       'size', // `size` not an official CSS property
     ].includes(token.path[token.path.length - 1]),
+    isCursor: !!token && token.path[token.path.length - 1] === 'cursor',
   };
 };
 

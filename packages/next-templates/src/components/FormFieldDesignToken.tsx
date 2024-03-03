@@ -3,6 +3,7 @@ import { FormFieldTextbox, FormFieldTextboxProps } from './FormFieldTextbox';
 import { Code, ColorSample } from '@utrecht/component-library-react';
 import { useTokenDataContext } from '@/utils/TokenDataContext';
 import { useCustomTokenContext } from '@/utils/CustomTokenContext';
+import { CursorSample } from './CursorSample';
 
 export interface FormFieldDesignTokenProps extends FormFieldTextboxProps {
   token: string;
@@ -15,6 +16,9 @@ export const FormFieldDesignToken = forwardRef(
     const { getToken } = useTokenDataContext();
     const { formatComputedValue, formatTokenValue, useTokenInput } = useCustomTokenContext();
 
+    const tokenObj = getToken(token);
+    const isCursor = !!tokenObj?.isCursor;
+
     return (
       <FormFieldTextbox type={type} {...props} {...useTokenInput({ token, transformValue })} ref={ref}>
         {getToken(token)?.isColor && <ColorSample color={formatComputedValue(token)}></ColorSample>}
@@ -23,6 +27,7 @@ export const FormFieldDesignToken = forwardRef(
             <Code>{formatTokenValue(token) || ''}</Code>
           </div>
         )}
+        {isCursor && <CursorSample cursor={tokenObj?.value} />}
       </FormFieldTextbox>
     );
   },
