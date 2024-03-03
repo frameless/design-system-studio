@@ -7,7 +7,7 @@ import {
   Textarea,
 } from '@utrecht/component-library-react';
 import clsx from 'clsx';
-import { ForwardedRef, ReactNode, forwardRef, useId } from 'react';
+import { ForwardedRef, PropsWithChildren, ReactNode, forwardRef, useId } from 'react';
 
 export interface FormFieldTextareaProps extends FormFieldProps {
   name?: string;
@@ -51,8 +51,9 @@ export const FormFieldTextarea = forwardRef(
       onFocus,
       onBlur,
       defaultValue,
+      children,
       ...props
-    }: FormFieldTextareaProps,
+    }: PropsWithChildren<FormFieldTextareaProps>,
     ref: ForwardedRef<HTMLTextAreaElement>,
   ) => {
     const inputId = useId();
@@ -102,6 +103,7 @@ export const FormFieldTextarea = forwardRef(
             <div className="voorbeeld-form-field-description voorbeeld-form-field-description--status">{status}</div>
           </div>
         )}
+        {children}
       </FormField>
     );
   },

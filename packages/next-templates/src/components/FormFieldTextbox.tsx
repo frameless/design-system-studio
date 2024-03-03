@@ -8,7 +8,7 @@ import {
 } from '@utrecht/component-library-react';
 import { TextboxTypes } from '@utrecht/component-library-react/dist/Textbox';
 import clsx from 'clsx';
-import { ForwardedRef, ReactNode, forwardRef, useId } from 'react';
+import { ForwardedRef, PropsWithChildren, ReactNode, forwardRef, useId } from 'react';
 
 export interface FormFieldTextboxProps extends FormFieldProps {
   name?: string;
@@ -60,8 +60,9 @@ export const FormFieldTextbox = forwardRef(
       onBlur,
       defaultValue,
       size,
+      children,
       ...props
-    }: FormFieldTextboxProps,
+    }: PropsWithChildren<FormFieldTextboxProps>,
     ref: ForwardedRef<HTMLInputElement>,
   ) => {
     const inputId = useId();
@@ -118,6 +119,7 @@ export const FormFieldTextbox = forwardRef(
             <div className="voorbeeld-form-field-description voorbeeld-form-field-description--status">{status}</div>
           </div>
         )}
+        {children}
       </FormField>
     );
   },
