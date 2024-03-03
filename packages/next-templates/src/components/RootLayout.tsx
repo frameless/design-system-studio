@@ -50,6 +50,7 @@ import { StudioContextProvider, initStudioContext } from '@/utils/StudioContext'
 import { TokenDataContextProvider, initTokenDataContext } from '@/utils/TokenDataContext';
 import { CustomTokenContextProvider, initCustomTokenContext } from '@/utils/CustomTokenContext';
 import { IconReload, IconShare, IconTrash } from '@tabler/icons-react';
+import { FormFieldDesignToken } from './FormFieldDesignToken';
 
 const designTokensMap = createDesignTokenMap([...themeBuilderTokens, ...designTokens]);
 
@@ -105,13 +106,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
   const [copyActivatedTimeout, setCopyActivatedTimeout] = useState(false);
 
   const customTokenContext = initCustomTokenContext({ tokenMap, tokens: initialTokens });
-  const {
-    tokenMap: userTokens,
-    formatComputedValue,
-    formatTokenValue,
-    useTokenInput,
-    reset: resetCustomTokens,
-  } = customTokenContext;
+  const { tokenMap: userTokens, formatComputedValue, formatTokenValue, reset: resetCustomTokens } = customTokenContext;
 
   const params = new URLSearchParams({
     ...Object.fromEntries(Object.entries(userTokens).map(([key, value]) => [key, String(value)])),
@@ -154,67 +149,52 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                 </datalist>
                 {/* Changing utrecht.document.color color does not work great because of more specific component tokens,
            such as utrecht.paragraph.color */}
-                <FormFieldTextbox
-                  label="Text"
-                  {...useTokenInput({ token: 'utrecht.document.color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('utrecht.document.color')}></ColorSample>
+                <FormFieldDesignToken token="utrecht.document.color" label="Text"></FormFieldDesignToken>
 
-                <FormFieldTextbox
+                <FormFieldDesignToken
+                  token="utrecht.document.background-color"
                   label="Document background color"
                   description="The background for most text."
-                  {...useTokenInput({ token: 'utrecht.document.background-color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('utrecht.document.background-color')}></ColorSample>
+                ></FormFieldDesignToken>
 
-                <FormFieldTextbox
+                <FormFieldDesignToken
                   label="Surface color"
                   description="The background color that covers the browser canvas from edge to edge."
-                  {...useTokenInput({ token: 'utrecht.surface.background-color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('utrecht.surface.background-color')}></ColorSample>
+                  token="utrecht.surface.background-color"
+                ></FormFieldDesignToken>
 
-                {/* Changing utrecht.link.color color does not work great when more specific component tokens are set,
-           such as utrecht.link.hover.color and utrecht.link.underline.color */}
-                <FormFieldTextbox
-                  label="Link color"
-                  {...useTokenInput({ token: 'utrecht.link.color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('utrecht.link.color')}></ColorSample>
+                <FormFieldDesignToken label="Link color" token="utrecht.link.background-color"></FormFieldDesignToken>
 
                 {/* TODO: "Action accent color" should change a common token, not a component token */}
-                <FormFieldTextbox
+
+                <FormFieldDesignToken label="Link color" token="utrecht.link.background-color"></FormFieldDesignToken>
+
+                <FormFieldDesignToken
                   label="Action accent color"
-                  {...useTokenInput({ token: 'utrecht.interaction.color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('utrecht.interaction.color')}></ColorSample>
+                  token="utrecht.interaction.color"
+                ></FormFieldDesignToken>
 
-                <FormFieldTextbox
+                <FormFieldDesignToken
                   label="Decoration background color"
-                  {...useTokenInput({ token: 'voorbeeld.decoration.background-color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('voorbeeld.decoration.background-color')}></ColorSample>
+                  token="voorbeeld.decoration.background-color"
+                ></FormFieldDesignToken>
 
-                <FormFieldTextbox
+                <FormFieldDesignToken
                   label="Decoration color"
-                  {...useTokenInput({ token: 'voorbeeld.decoration.color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('voorbeeld.decoration.color')}></ColorSample>
+                  token="voorbeeld.decoration.color"
+                ></FormFieldDesignToken>
 
                 {/* TODO: "Primary action accent color" should change a common token, not a component token */}
-                <FormFieldTextbox
-                  label="Primary action color"
-                  {...useTokenInput({ token: 'utrecht.button.primary-action.background-color' })}
-                ></FormFieldTextbox>
-                <ColorSample
-                  color={formatComputedValue('utrecht.button.primary-action.background-color')}
-                ></ColorSample>
 
-                <FormFieldTextbox
+                <FormFieldDesignToken
+                  label="Primary action color"
+                  token="utrecht.button.primary-action.background-color"
+                ></FormFieldDesignToken>
+
+                <FormFieldDesignToken
                   label="Focus background color"
-                  {...useTokenInput({ token: 'utrecht.focus.background-color' })}
-                ></FormFieldTextbox>
-                <ColorSample color={formatComputedValue('utrecht.focus.background-color')}></ColorSample>
+                  token="utrecht.focus.background-color"
+                ></FormFieldDesignToken>
               </details>
               <details>
                 <summary>Font</summary>
@@ -226,27 +206,21 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                       </option>
                     ))}
                   </datalist>
-                  <FormFieldTextbox
-                    label="Font"
-                    {...useTokenInput({ token: 'utrecht.document.font-family' })}
-                    list="font-family-values"
-                  ></FormFieldTextbox>
-                  <FormFieldTextbox
+                  <FormFieldDesignToken label="Font" token="utrecht.document.font-family" list="font-family-values" />
+                  <FormFieldDesignToken
                     label="Heading font"
-                    {...useTokenInput({ token: 'utrecht.heading.font-family' })}
+                    token="utrecht.heading.font-family"
                     list="font-family-values"
-                  ></FormFieldTextbox>
-                  <FormFieldTextbox
+                  />
+                  <FormFieldDesignToken
                     label="Minimum font size"
                     min={10}
                     max={64}
                     step={1}
                     type="range"
-                    {...useTokenInput({ token: 'frameless.font.minimum-font-size', transformValue: (px) => `${px}px` })}
-                  ></FormFieldTextbox>
-                  <div>
-                    <Code>{formatTokenValue('frameless.font.minimum-font-size') || ''}</Code>
-                  </div>
+                    token="frameless.font.minimum-font-size"
+                    transformValue={(px) => `${px}px`}
+                  />
                   <FormField>
                     <FormLabel>Font size scale</FormLabel>
                     <Select
@@ -291,27 +265,20 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
               </details>
               <details>
                 <summary>Rounded corners</summary>
-                <div>
-                  {/* TODO: "Border radius" should change a common token, not a component token */}
-                  <FormFieldTextbox
-                    label="Border radius"
-                    min={0}
-                    max={16}
-                    type="range"
-                    {...useTokenInput({
-                      token: 'utrecht.button.border-radius',
-                      transformValue: (value) => `${value}px`,
-                    })}
-                  ></FormFieldTextbox>
-                </div>
-                <div>
-                  <Code>{formatTokenValue('utrecht.button.border-radius') || ''}</Code>
-                </div>
+                {/* TODO: "Border radius" should change a common token, not a component token */}
+                <FormFieldDesignToken
+                  label="Border radius"
+                  min={0}
+                  max={16}
+                  type="range"
+                  token="utrecht.button.border-radius"
+                  transformValue={(value) => `${value}px`}
+                ></FormFieldDesignToken>
               </details>
               <details>
                 <summary>Pinned design tokens ({Object.keys(pinned).length})</summary>
                 {Object.keys(pinned).map((token) => (
-                  <FormFieldTextbox key={token} label={token} {...useTokenInput({ token })}></FormFieldTextbox>
+                  <FormFieldDesignToken key={token} label={token} token={token} />
                 ))}
               </details>
               <Button onClick={() => scanPageEffect()}>
@@ -327,16 +294,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                     {getComponentTokens(id, components, designTokens).map((token) => {
                       const { name } = token;
                       const ref = token.path.slice(2).join('.');
-                      return (
-                        <div key={name}>
-                          {' '}
-                          <FormFieldTextbox
-                            label={<Code>{ref}</Code>}
-                            {...useTokenInput({ token: ref })}
-                          ></FormFieldTextbox>
-                          <ColorSample color={formatComputedValue(ref)}></ColorSample>
-                        </div>
-                      );
+                      return <FormFieldDesignToken key={name} label={<Code>{ref}</Code>} token={ref} />;
                     })}
                   </details>
                 );

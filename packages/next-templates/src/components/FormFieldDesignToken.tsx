@@ -1,17 +1,28 @@
 import { ForwardedRef, forwardRef } from 'react';
 import { FormFieldTextbox, FormFieldTextboxProps } from './FormFieldTextbox';
-import { ColorSample } from '@utrecht/component-library-react';
+import { Code, ColorSample } from '@utrecht/component-library-react';
+import { useTokenDataContext } from '@/utils/TokenDataContext';
+import { useCustomTokenContext } from '@/utils/CustomTokenContext';
 
 export interface FormFieldDesignTokenProps extends FormFieldTextboxProps {
   token: string;
+  transformValue?: (value: string) => string;
 }
 
 export const FormFieldDesignToken = forwardRef(
-  ({ ...props }: FormFieldDesignTokenProps, ref: ForwardedRef<HTMLInputElement>) => {
+  ({ token, transformValue, type, ...props }: FormFieldDesignTokenProps, ref: ForwardedRef<HTMLInputElement>) => {
     let color;
+    const { getToken } = useTokenDataContext();
+    const { formatComputedValue, formatTokenValue, useTokenInput } = useCustomTokenContext();
+
     return (
-      <FormFieldTextbox {...props} ref={ref}>
-        {color && <ColorSample color={color}></ColorSample>}
+      <FormFieldTextbox type={type} {...props} {...useTokenInput({ token, transformValue })} ref={ref}>
+        {getToken(token)?.isColor && <ColorSample color={formatComputedValue(token)}></ColorSample>}
+        {type === 'range' && (
+          <div>
+            <Code>{formatTokenValue(token) || ''}</Code>
+          </div>
+        )}
       </FormFieldTextbox>
     );
   },

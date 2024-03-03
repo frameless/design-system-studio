@@ -32,6 +32,7 @@ import {
 } from '@tabler/icons-react';
 import { useStudioContext } from '@/utils/StudioContext';
 import { useCustomTokenContext } from '@/utils/CustomTokenContext';
+import { FormFieldDesignToken } from './FormFieldDesignToken';
 
 export const DesignTokenTable = <T extends DesignTokenInfo & { pinned?: boolean; togglePinned?: any }>({
   tokens,
@@ -149,11 +150,7 @@ export const DesignTokenTable = <T extends DesignTokenInfo & { pinned?: boolean;
                   <Code>{tokenRef}</Code>
                 </TableCell>
                 <TableCell>
-                  {editable ? (
-                    <FormFieldTextbox label={name} {...useTokenInput({ token: tokenRef })}></FormFieldTextbox>
-                  ) : (
-                    <Code>{String(value)}</Code>
-                  )}
+                  {editable ? <FormFieldDesignToken label={name} token={tokenRef} /> : <Code>{String(value)}</Code>}
                 </TableCell>
                 <TableCell>
                   <ButtonGroup>
