@@ -294,8 +294,8 @@ importers:
         specifier: 3.0.1-alpha.14
         version: 3.0.1-alpha.14(react-dom@18.2.0)(react@18.2.0)
       '@utrecht/components':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 3.0.0
+        version: 3.0.0
       '@utrecht/design-tokens':
         specifier: 1.0.0-alpha.633
         version: 1.0.0-alpha.633
@@ -4074,8 +4074,8 @@ packages:
       react-dom: 18.2.0(react@18.2.0)
     dev: true
 
-  /@utrecht/components@2.0.0:
-    resolution: {integrity: sha512-PZmvcmHa5SB4V5xLV/5iqyQfN7rVXN5FKY/pXKX2MopUd/FdRM0uTaVcDmUn62jDOcoisO4UrmttzKe75ysh/Q==}
+  /@utrecht/components@3.0.0:
+    resolution: {integrity: sha512-TO39Ti6Af50l+I2gt4S3iacGVuVoxBK/+G/bsK9wvii53fO35NYJul7xB98/IYSBmewaN4GtmyWGphVDdFMt1A==}
     dependencies:
       clsx: 1.2.1
     dev: true
