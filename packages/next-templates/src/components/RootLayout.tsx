@@ -163,11 +163,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                   token="utrecht.surface.background-color"
                 ></FormFieldDesignToken>
 
-                <FormFieldDesignToken label="Link color" token="utrecht.link.background-color"></FormFieldDesignToken>
-
-                {/* TODO: "Action accent color" should change a common token, not a component token */}
-
-                <FormFieldDesignToken label="Link color" token="utrecht.link.background-color"></FormFieldDesignToken>
+                <FormFieldDesignToken label="Link color" token="utrecht.link.color"></FormFieldDesignToken>
 
                 <FormFieldDesignToken
                   label="Action accent color"
@@ -293,8 +289,8 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                     <summary>{label}</summary>
                     {getComponentTokens(id, components, designTokens).map((token) => {
                       const { name } = token;
-                      const ref = token.path.slice(2).join('.');
-                      return <FormFieldDesignToken key={name} label={<Code>{ref}</Code>} token={ref} />;
+                      const label = token.path.slice(2).join('.');
+                      return <FormFieldDesignToken key={name} label={<Code>{label}</Code>} token={tokenRef(token)} />;
                     })}
                   </details>
                 );
