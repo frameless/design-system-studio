@@ -51,6 +51,8 @@ import { TokenDataContextProvider, initTokenDataContext } from '@/utils/TokenDat
 import { CustomTokenContextProvider, initCustomTokenContext } from '@/utils/CustomTokenContext';
 import { IconReload, IconShare, IconTrash } from '@tabler/icons-react';
 import { FormFieldDesignToken } from './FormFieldDesignToken';
+import { DownshiftCombobox } from './Combobox';
+import { FontSample } from './FontSample';
 
 const designTokensMap = createDesignTokenMap([...themeBuilderTokens, ...designTokens]);
 
@@ -150,6 +152,34 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                 {/* Changing utrecht.document.color color does not work great because of more specific component tokens,
            such as utrecht.paragraph.color */}
                 <FormFieldDesignToken token="utrecht.document.color" label="Text"></FormFieldDesignToken>
+
+                <DownshiftCombobox
+                  defaultValue="Arial"
+                  options={fontFamilies.map((font) => ({
+                    value: font,
+                    children: <FontSample fontFamily={font}>{font}</FontSample>,
+                  }))}
+                  style={{
+                    '--utrecht-listbox-background-color': 'white',
+                    '--utrecht-listbox-color': 'black',
+                  }}
+                />
+
+                <DownshiftCombobox
+                  defaultValue=""
+                  options={commonColorTokens.map(({ name, value }) => ({
+                    value: name,
+                    children: (
+                      <>
+                        <ColorSample color={String(value)} /> {name}
+                      </>
+                    ),
+                  }))}
+                  style={{
+                    '--utrecht-listbox-background-color': 'white',
+                    '--utrecht-listbox-color': 'black',
+                  }}
+                />
 
                 <FormFieldDesignToken
                   token="utrecht.document.background-color"
