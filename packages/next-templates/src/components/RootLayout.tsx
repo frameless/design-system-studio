@@ -140,7 +140,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
           <ThemeBuilder>
             <ThemeBuilderSidebar lang="en" className="frameless-theme frameless-theme--dark">
               <Heading1>Frameless Studio</Heading1>
-              <details>
+              <details open>
                 <summary>Color</summary>
                 <datalist id="color-tokens">
                   {commonColorTokens.map(({ name, value }) => (
@@ -155,7 +155,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
 
                 <DownshiftCombobox
                   defaultValue="Arial"
-                  options={fontFamilies.map((font) => ({
+                  options={fontFamilies.map((font, index) => ({
                     value: font,
                     children: <FontSample fontFamily={font}>{font}</FontSample>,
                   }))}
@@ -164,7 +164,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                     '--utrecht-listbox-color': 'black',
                   }}
                 />
-
+                {/* 
                 <DownshiftCombobox
                   defaultValue=""
                   options={commonColorTokens.map(({ name, value }) => ({
@@ -179,7 +179,7 @@ export default function RootLayout({ children }: PropsWithChildren<{}>) {
                     '--utrecht-listbox-background-color': 'white',
                     '--utrecht-listbox-color': 'black',
                   }}
-                />
+                /> */}
 
                 <FormFieldDesignToken
                   token="utrecht.document.background-color"

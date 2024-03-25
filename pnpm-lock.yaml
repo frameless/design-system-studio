@@ -291,8 +291,8 @@ importers:
         specifier: 3.0.1-alpha.12
         version: 3.0.1-alpha.12
       '@utrecht/component-library-react':
-        specifier: 3.0.1-alpha.25
-        version: 3.0.1-alpha.25(react-dom@18.2.0)(react@18.2.0)
+        specifier: 3.0.1-alpha.26
+        version: 3.0.1-alpha.26(react-dom@18.2.0)(react@18.2.0)
       '@utrecht/components':
         specifier: 2.0.0
         version: 2.0.0
@@ -4055,8 +4055,8 @@ packages:
     resolution: {integrity: sha512-X/vHfxzfrf72lM5VnHvfEa5DaFFZr00EKUjlA3ZY3vMUQvRujiP3uG1ogkEkjtq7Np4WtuO3rOhEvirviB1dFg==}
     dev: true
 
-  /@utrecht/component-library-react@3.0.1-alpha.25(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-1rQJpO3fjnJpcpZ8tyrFxiwUGx8kH0fjybRNn8f8fgXxa/oRWhuf1qxaNv41RJ1W2E8L9hKusiqVxwndR56GQA==}
+  /@utrecht/component-library-react@3.0.1-alpha.26(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-GCK60IKRqQ/LX5FBamUTVCNij8fbFSgQmHaTTDTHgxe/RAbY0g98tnAiOXNFDPFlhteHBpGouCl3BDPgytMFWg==}
     peerDependencies:
       date-fns: ^2.30.0
       react: '18'
